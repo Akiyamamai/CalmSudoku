@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f3ec">
+  <script>
+    // Apply the saved theme before the page is drawn, so dark mode never flashes light first.
+    try {
+      var saved = JSON.parse(localStorage.getItem('calm-sudoku/v1/settings') || '{}');
+      document.documentElement.dataset.theme = saved.theme || 'light';
+    } catch (e) {
+      document.documentElement.dataset.theme = 'light';
+    }
+  </script>
+  <title>Calm Sudoku</title>
+  <meta name="description" content="A calm Sudoku with four daily puzzles, notes and stats. Works offline, no accounts.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="Calm Sudoku">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="preload" href="fonts/nunito-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <div class="screen home-screen" id="home-screen">
+      <header class="home-header">
+        <h1 class="home-title">Calm Sudoku</h1>
+      </header>
+
+      <section class="home-section" aria-labelledby="daily-heading">
+        <h2 class="section-title" id="daily-heading">Today's puzzles</h2>
+        <p class="section-sub" id="today-label"></p>
+        <div class="daily-cards" id="daily-cards"></div>
+      </section>
+
+      <section class="home-section" id="continue-section" aria-labelledby="continue-heading" hidden>
+        <h2 class="section-title" id="continue-heading">Continue</h2>
+        <button class="continue-card" id="continue-button" type="button">
+          <span class="continue-level" id="continue-level"></span>
+          <span class="continue-time" id="continue-time"></span>
+          <svg class="continue-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z"/></svg>
+        </button>
+      </section>
+
+      <section class="home-section" aria-labelledby="new-game-heading">
+        <h2 class="section-title" id="new-game-heading">New game</h2>
+        <div class="level-buttons" id="level-buttons">
+          <button class="level-button" type="button" data-level="easy">Easy</button>
+          <button class="level-button" type="button" data-level="medium">Medium</button>
+          <button class="level-button" type="button" data-level="hard">Hard</button>
+          <button class="level-button" type="button" data-level="expert">Expert</button>
+        </div>
+      </section>
+
+      <nav class="home-links" id="home-links" aria-label="More">
+        <button class="home-link" type="button" data-go="archive">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>
+          <span>Archive</span>
+        </button>
+        <button class="home-link" type="button" data-go="stats">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 20v-6M12 20V8M18 20v-9"/></svg>
+          <span>Stats</span>
+        </button>
+        <button class="home-link" type="button" data-go="settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg>
+          <span>Settings</span>
+        </button>
+      </nav>    </div>
+
+    <div class="screen archive-screen" id="archive-screen" hidden>
+      <header class="sub-header">
+        <button class="icon-button" id="archive-back" type="button" aria-label="Back to Home">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <h1 class="sub-title">Archive</h1>
+      </header>
+
+      <section class="calendar-card" aria-label="Calendar">
+        <div class="month-nav">
+          <button class="icon-button" id="month-prev" type="button" aria-label="Previous month">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <h2 class="month-label" id="month-label" aria-live="polite"></h2>
+          <button class="icon-button" id="month-next" type="button" aria-label="Next month">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+        <div class="calendar" id="calendar"></div>
+      </section>
+
+      <section class="day-panel" aria-labelledby="day-label">
+        <h2 class="section-title" id="day-label"></h2>
+        <div class="day-chips" id="day-chips"></div>
+      </section>
+    </div>
+
+    <div class="screen stats-screen" id="stats-screen" hidden>
+      <header class="sub-header">
+        <button class="icon-button" id="stats-back" type="button" aria-label="Back to Home">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <h1 class="sub-title">Stats</h1>
+      </header>
+
+      <section class="streak-card" aria-label="Daily streak">
+        <div class="streak">
+          <span class="streak-num" id="streak-current">0</span>
+          <span class="streak-label">Current streak</span>
+        </div>
+        <div class="streak">
+          <span class="streak-num" id="streak-best">0</span>
+          <span class="streak-label">Best streak</span>
+        </div>
+        <p class="streak-note">Finish one of <strong>today's daily puzzles</strong> (on Home) to keep your streak going. New games and archive puzzles count in the table below, but not for the streak.</p>
+      </section>
+
+      <section class="stats-card" id="stats-table-card" aria-labelledby="stats-heading">
+        <h2 class="section-title" id="stats-heading">By level</h2>
+        <table class="stats-table">
+          <thead>
+            <tr><th scope="col">Level</th><th scope="col">Solved</th><th scope="col">Best</th><th scope="col">Average</th></tr>
+          </thead>
+          <tbody id="stats-rows"></tbody>
+        </table>
+      </section>
+
+      <section class="stats-card stats-empty" id="stats-empty" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6.5 7-6.5 0 4-3 6.5-7 6.5z"/><path d="M12 15c0-3-2.5-5.5-6-5.5 0 3 2.5 5.5 6 5.5z"/></svg>
+        <p class="stats-empty-title">Nothing here yet</p>
+        <p class="stats-empty-text">Finish a puzzle and your times will gently gather here.</p>
+      </section>
+    </div>
+
+    <div class="screen settings-screen" id="settings-screen" hidden>
+      <header class="sub-header">
+        <button class="icon-button" id="settings-back" type="button" aria-label="Back to Home">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <h1 class="sub-title">Settings</h1>
+      </header>
+
+      <section class="settings-group" aria-labelledby="appearance-heading">
+        <h2 class="settings-heading" id="appearance-heading">Appearance</h2>
+        <div class="settings-card">
+          <div class="setting-row setting-row-stacked">
+            <div class="setting-text">
+              <span class="setting-name" id="theme-name">Theme</span>
+              <span class="setting-help" id="theme-help">Auto follows your device's light or dark setting.</span>
+            </div>
+            <div class="segmented" id="theme-choice" role="radiogroup" aria-labelledby="theme-name" aria-describedby="theme-help">
+              <button type="button" role="radio" data-theme-option="light" aria-checked="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+                Light
+              </button>
+              <button type="button" role="radio" data-theme-option="dark" aria-checked="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+                Dark
+              </button>
+              <button type="button" role="radio" data-theme-option="auto" aria-checked="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+                Auto
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="settings-group" aria-labelledby="sound-heading">
+        <h2 class="settings-heading" id="sound-heading">Sound</h2>
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name" id="sfx-name">Sound effects</span>
+              <span class="setting-help" id="sfx-help">Soft taps and chimes while you play.</span>
+            </div>
+            <button class="switch" id="sfx-switch" type="button" role="switch" aria-checked="true"
+                    aria-labelledby="sfx-name" aria-describedby="sfx-help">
+              <span class="switch-knob" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="setting-row volume-row" id="sfx-volume-row">
+            <svg class="volume-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/></svg>
+            <input class="volume" id="sfx-volume" type="range" min="0" max="100" step="5" value="70"
+                   aria-label="Sound effects volume">
+            <svg class="volume-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+          </div>
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name" id="music-name">Music</span>
+              <span class="setting-help" id="music-help">Gentle ambient piano and pads, always a little different.</span>
+            </div>
+            <button class="switch" id="music-switch" type="button" role="switch" aria-checked="false"
+                    aria-labelledby="music-name" aria-describedby="music-help">
+              <span class="switch-knob" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="setting-row volume-row" id="music-volume-row">
+            <svg class="volume-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/></svg>
+            <input class="volume" id="music-volume" type="range" min="0" max="100" step="5" value="50"
+                   aria-label="Music volume">
+            <svg class="volume-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="settings-group" aria-labelledby="gameplay-heading">
+        <h2 class="settings-heading" id="gameplay-heading">Gameplay</h2>
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name" id="number-first-name">Number-first mode</span>
+              <span class="setting-help" id="number-first-help">Pick a number on the pad first, then tap cells to fill them with it.</span>
+            </div>
+            <button class="switch" id="number-first-switch" type="button" role="switch" aria-checked="false"
+                    aria-labelledby="number-first-name" aria-describedby="number-first-help">
+              <span class="switch-knob" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="screen game-screen" id="game-screen" hidden>
+      <header class="info-bar">
+        <button class="icon-button" id="menu-button" type="button" aria-label="Home">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <span class="difficulty" id="difficulty">Easy</span>
+        <span class="timer" id="timer" aria-label="Time">00:00</span>
+        <button class="icon-button" id="pause-button" type="button" aria-label="Pause">
+          <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+          <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z"/></svg>
+        </button>
+      </header>
+
+      <main class="play-area">
+        <div class="board-wrap">
+          <div id="board" class="board" role="grid" aria-label="Sudoku board"></div>
+          <div class="pause-card" id="pause-card" hidden>
+            <p class="pause-title">Paused</p>
+            <p class="pause-time" id="pause-time">00:00</p>
+            <button class="primary-button" id="resume-button" type="button">Resume</button>
+          </div>
+          <div class="pause-card solved-card" id="solved-card" hidden>
+            <p class="pause-title">Solved!</p>
+            <p class="pause-time">Your time: <span id="solved-time">00:00</span></p>
+            <div class="card-buttons">
+              <button class="primary-button" id="next-button" type="button">Next puzzle</button>
+              <button class="text-button" id="solved-home-button" type="button">Home</button>
+            </div>
+          </div>
+          <div class="pause-card preparing-card" id="preparing-card" role="status" hidden>
+            <p class="preparing-text">Preparing puzzle…</p>
+          </div>
+          <p class="board-message" id="board-message" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="controls">
+          <div class="tools">
+            <button class="tool" id="undo-button" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg>
+              <span>Undo</span>
+            </button>
+            <button class="tool" id="erase-button" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h11v14H9l-6-7z"/><path d="m12 9 5 6M17 9l-5 6"/></svg>
+              <span>Erase</span>
+            </button>
+            <button class="tool" id="notes-button" type="button" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l5 5L9 20H4v-5z"/><path d="m13 6 5 5"/></svg>
+              <span>Notes</span>
+              <span class="tool-badge" aria-hidden="true">Off</span>
+            </button>
+          </div>
+
+          <div class="number-pad" id="number-pad">
+            <button class="num" type="button" data-num="1"><span class="num-digit">1</span><span class="num-left"></span></button>
+            <button class="num" type="button" data-num="2"><span class="num-digit">2</span><span class="num-left"></span></button>
+            <button class="num" type="button" data-num="3"><span class="num-digit">3</span><span class="num-left"></span></button>
+            <button class="num" type="button" data-num="4"><span class="num-digit">4</span><span class="num-left"></span></button>
+            <button class="num" type="button" data-num="5"><span class="num-digit">5</span><span class="num-left"></span></button>
+            <button class="num" type="button" data-num="6"><span class="num-digit">6</span><span class="num-left"></span></button>
+            <button class="num" type="button" data-num="7"><span class="num-digit">7</span><span class="num-left"></span></button>
+            <button class="num" type="button" data-num="8"><span class="num-digit">8</span><span class="num-left"></span></button>
+            <button class="num" type="button" data-num="9"><span class="num-digit">9</span><span class="num-left"></span></button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <footer class="support-bar">
+      <div class="ad-slot" aria-label="Advertisement">Ad space</div>
+      <a class="tip-link" href="#" id="tip-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 3c-.6 1 .6 2 0 3M12.5 3c-.6 1 .6 2 0 3"/></svg>
+        Support Calm Sudoku
+      </a>
+    </footer>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

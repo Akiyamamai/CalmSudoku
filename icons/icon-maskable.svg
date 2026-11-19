@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <style>@font-face { font-family: "Nunito"; src: url("../fonts/nunito-latin-variable.woff2") format("woff2"); font-weight: 200 1000; }</style>
+  <rect width="512" height="512" fill="#f7f3ec"/>
+  <g transform="translate(256 256) scale(0.82) translate(-256 -256)">
+<path d="M202.7 104V192M309.3 104V192M202.7 320V408M309.3 320V408M104 192h304M104 320h304" stroke="#cbbfad" stroke-width="7" stroke-linecap="round"/>
+    <rect x="112" y="200" width="288" height="112" rx="20" fill="#dcb560"/>
+    <rect x="96" y="96" width="320" height="320" rx="34" fill="none" stroke="#978e81" stroke-width="12"/>
+    <text x="256" y="236" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="800" font-size="78" letter-spacing="1" fill="#373d39">calm</text>
+    <text x="256" y="286" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="700" font-size="40" letter-spacing="3" fill="#4a4f4b">sudoku</text>
+  </g>
+</svg>
