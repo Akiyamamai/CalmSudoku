@@ -227,7 +227,7 @@
       </section>
 
       <section class="settings-group" aria-labelledby="help-heading">
-        <h2 class="settings-heading" id="help-heading">Help</h2>
+        <h2 class="settings-heading" id="help-heading">Help &amp; support</h2>
         <div class="settings-card">
           <button class="setting-row setting-link" id="settings-tutorial" type="button">
             <span class="setting-text">
@@ -236,6 +236,14 @@
             </span>
             <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
           </button>
+          <a class="setting-row setting-link" href="https://ko-fi.com/akiyamamai" target="_blank" rel="noopener"
+             aria-label="Support Calm Sudoku on Ko-fi (opens in a new tab)">
+            <span class="setting-text">
+              <span class="setting-name">Support Calm Sudoku</span>
+              <span class="setting-help">If you enjoy the game, you can buy me a coffee on Ko-fi.</span>
+            </span>
+            <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg>
+          </a>
         </div>
       </section>
     </div>
@@ -332,12 +340,13 @@
     </div>
 
     <footer class="support-bar">
-      <div class="ad-slot" aria-label="Advertisement">Ad space</div>
-      <!-- Becomes a real link (<a href="...">) once the tip page exists (Task 35). -->
-      <span class="tip-link" id="tip-link">
+      <!-- The tip link sits above the ad with clear space between, so neither is tapped by mistake. -->
+      <a class="tip-link" id="tip-link" href="https://ko-fi.com/akiyamamai" target="_blank" rel="noopener"
+         aria-label="Support Calm Sudoku on Ko-fi (opens in a new tab)">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 3c-.6 1 .6 2 0 3M12.5 3c-.6 1 .6 2 0 3"/></svg>
-        Support Calm Sudoku <span class="coming-soon">(coming soon)</span>
-      </span>
+        Support Calm Sudoku
+      </a>
+      <div class="ad-slot" aria-label="Advertisement">Ad space</div>
     </footer>
   </div>
 
