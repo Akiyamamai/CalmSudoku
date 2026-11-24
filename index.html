@@ -238,6 +238,19 @@
         </div>
       </section>
 
+      <section class="settings-group" aria-labelledby="sharing-heading">
+        <h2 class="settings-heading" id="sharing-heading">Sharing</h2>
+        <div class="settings-card">
+          <button class="setting-row setting-link" id="settings-nickname" type="button">
+            <span class="setting-text">
+              <span class="setting-name">Nickname for challenges</span>
+              <span class="setting-help" id="settings-nickname-help"></span>
+            </span>
+            <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </section>
+
       <section class="settings-group" aria-labelledby="help-heading">
         <h2 class="settings-heading" id="help-heading">Help &amp; support</h2>
         <div class="settings-card">
@@ -289,7 +302,10 @@
         <button class="icon-button" id="menu-button" type="button" aria-label="Home">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
-        <span class="difficulty" id="difficulty">Easy</span>
+        <div class="title-block">
+          <span class="difficulty" id="difficulty">Easy</span>
+          <span class="challenge-line" id="challenge-line" hidden></span>
+        </div>
         <span class="timer" id="timer" aria-label="Time">00:00</span>
         <button class="icon-button" id="pause-button" type="button" aria-label="Pause">
           <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
@@ -308,6 +324,7 @@
           <div class="pause-card solved-card" id="solved-card" hidden>
             <p class="pause-title">Solved!</p>
             <p class="pause-time">Your time: <span id="solved-time">00:00</span></p>
+            <p class="challenge-result" id="challenge-result" hidden></p>
             <div class="card-buttons">
               <button class="primary-button" id="next-button" type="button">Next puzzle</button>
               <button class="share-button" id="share-button" type="button">
@@ -365,6 +382,20 @@
       <div class="ad-slot" aria-label="Advertisement">Ad space</div>
     </footer>
   </div>
+
+  <!-- Nickname for challenges: asked the first time Share is tapped, and from Settings -->
+  <dialog class="nickname-dialog" id="nickname-dialog" aria-labelledby="nickname-title" aria-describedby="nickname-note">
+    <form class="nickname-form" id="nickname-form">
+      <h2 class="nickname-title" id="nickname-title">Add a nickname?</h2>
+      <p class="nickname-note" id="nickname-note">Friends you challenge will see it with your time. A pen name is fine.</p>
+      <input class="nickname-input" id="nickname-input" type="text" maxlength="16" autocomplete="off"
+             autocapitalize="words" spellcheck="false" enterkeyhint="done" placeholder="e.g. Mai" aria-label="Nickname">
+      <div class="nickname-buttons">
+        <button class="text-button" id="nickname-skip" type="button">Skip</button>
+        <button class="primary-button" id="nickname-save" type="submit">Save &amp; share</button>
+      </div>
+    </form>
+  </dialog>
 
   <script type="module" src="js/app.js"></script>
 </body>
