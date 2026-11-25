@@ -14,12 +14,12 @@
     }
   </script>
   <title>Calm Sudoku</title>
-  <meta name="description" content="A calm Sudoku with four daily puzzles, notes and stats. Works offline, no accounts.">
+  <meta name="description" content="A calm, ad-free Sudoku with four daily puzzles, achievements and friendly challenges. Works offline.">
   <!-- Link previews (WhatsApp, Messages, Facebook, X…): the title, line and picture shown under a shared link. -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Calm Sudoku">
   <meta property="og:title" content="Calm Sudoku">
-  <meta property="og:description" content="A calm Sudoku with four daily puzzles, notes and stats. Works offline, no accounts.">
+  <meta property="og:description" content="A calm, ad-free Sudoku with four daily puzzles, achievements and friendly challenges. Works offline.">
   <meta property="og:url" content="https://akiyamamai.github.io/CalmSudoku/">
   <meta property="og:image" content="https://akiyamamai.github.io/CalmSudoku/icons/share-preview.png">
   <meta property="og:image:type" content="image/png">
@@ -84,7 +84,19 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.9v.1"/></svg>
           <span>How to play</span>
         </button>
-      </nav>    </div>
+      </nav>
+
+      <!-- The gentle backup note: below the links, above the Support box -->
+      <section class="home-section backup-reminder" id="backup-reminder" aria-labelledby="backup-reminder-title" hidden>
+        <p class="backup-reminder-title" id="backup-reminder-title">💾 Your progress lives only on this device</p>
+        <p class="backup-reminder-text" id="backup-reminder-text">There's no account, so save a backup now and then to keep your stats and achievements safe.</p>
+        <div class="backup-reminder-buttons" id="backup-reminder-buttons">
+          <button class="primary-button" id="reminder-save" type="button">Save backup</button>
+          <button class="text-button" id="reminder-later" type="button">Not now</button>
+          <button class="text-button" id="reminder-learn" type="button">Learn more</button>
+        </div>
+      </section>
+    </div>
 
     <div class="screen archive-screen" id="archive-screen" hidden>
       <header class="sub-header">
@@ -121,6 +133,12 @@
         <h1 class="sub-title">Stats</h1>
       </header>
 
+      <div class="segmented stats-tabs" id="stats-tabs" role="tablist" aria-label="Stats and achievements">
+        <button type="button" role="tab" id="stats-tab" aria-controls="stats-panel" aria-selected="true">Stats</button>
+        <button type="button" role="tab" id="achievements-tab" aria-controls="achievements-panel" aria-selected="false" tabindex="-1">Achievements</button>
+      </div>
+
+      <div class="stats-panel" id="stats-panel" role="tabpanel" aria-labelledby="stats-tab">
       <section class="streak-card" aria-label="Daily streak">
         <div class="streak">
           <span class="streak-num" id="streak-current">0</span>
@@ -148,6 +166,12 @@
         <p class="stats-empty-title">Nothing here yet</p>
         <p class="stats-empty-text">Finish a puzzle and your times will gently gather here.</p>
       </section>
+      </div>
+
+      <div class="stats-panel achievements-panel" id="achievements-panel" role="tabpanel" aria-labelledby="achievements-tab" hidden>
+        <p class="achievements-summary" id="achievements-summary"></p>
+        <div class="achievement-groups" id="achievement-groups"></div>
+      </div>
     </div>
 
     <div class="screen settings-screen" id="settings-screen" hidden>
@@ -238,6 +262,35 @@
         </div>
       </section>
 
+      <section class="settings-group" aria-labelledby="progress-heading">
+        <h2 class="settings-heading" id="progress-heading">Your progress</h2>
+        <div class="settings-card">
+          <button class="setting-row setting-link" id="backup-save" type="button">
+            <span class="setting-text">
+              <span class="setting-name">Save a backup</span>
+              <span class="setting-help" id="backup-last">Last backup: never</span>
+            </span>
+            <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19h14"/></svg>
+          </button>
+          <button class="setting-row setting-link" id="backup-restore" type="button">
+            <span class="setting-text">
+              <span class="setting-name">Restore from backup</span>
+              <span class="setting-help">Load a backup file (e.g. on a new device). It replaces the progress here.</span>
+            </span>
+            <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 19h14"/></svg>
+          </button>
+          <button class="setting-row setting-link" id="settings-keep" type="button">
+            <span class="setting-text">
+              <span class="setting-name">Why back up?</span>
+              <span class="setting-help">There's no account, so your progress lives only on this device.</span>
+            </span>
+            <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+        <p class="backup-status" id="backup-status" role="status"></p>
+        <input type="file" id="backup-file" accept=".json,application/json" hidden>
+      </section>
+
       <section class="settings-group" aria-labelledby="sharing-heading">
         <h2 class="settings-heading" id="sharing-heading">Sharing</h2>
         <div class="settings-card">
@@ -270,6 +323,50 @@
             <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg>
           </a>
         </div>
+      </section>
+    </div>
+
+    <div class="screen keep-screen" id="keep-screen" hidden>
+      <header class="sub-header">
+        <button class="icon-button" id="keep-back" type="button" aria-label="Back to Settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <h1 class="sub-title">Keep your progress safe</h1>
+      </header>
+
+      <section class="stats-card keep-card" aria-labelledby="keep-why">
+        <h2 class="section-title" id="keep-why">No account, no cloud</h2>
+        <p>Calm Sudoku has no accounts. Your stats, streaks, achievements and saved games are kept <strong>only in this browser, on this device</strong>. Nobody else can see them, and nobody (not even the developer) can bring them back if they're lost.</p>
+      </section>
+
+      <section class="stats-card keep-card" aria-labelledby="keep-risks">
+        <h2 class="section-title" id="keep-risks">What can erase it</h2>
+        <ul>
+          <li>Clearing your browser's history, cookies or site data.</li>
+          <li>Losing, breaking, resetting or replacing your phone.</li>
+          <li>Playing in a different browser or app: each keeps its own separate copy. On iPhone and iPad, Safari and the Home Screen app are separate too.</li>
+          <li>On iPhone and iPad, Safari may remove a website's data if it isn't opened for about a week. Adding Calm Sudoku to your Home Screen avoids this.</li>
+        </ul>
+      </section>
+
+      <section class="stats-card keep-card" aria-labelledby="keep-how">
+        <h2 class="section-title" id="keep-how">How to keep it safe</h2>
+        <ol>
+          <li>Go to <strong>Settings → Save a backup</strong>. It makes one small file.</li>
+          <li>Keep that file somewhere safe: email it or send it to yourself, or save it to Google Drive, iCloud Drive or OneDrive.</li>
+          <li>Save a fresh backup now and then (once a month is plenty), so it stays up to date.</li>
+        </ol>
+        <button class="primary-button keep-save" id="keep-save" type="button">Save a backup now</button>
+        <p class="backup-status" id="keep-status" role="status"></p>
+      </section>
+
+      <section class="stats-card keep-card" aria-labelledby="keep-restore">
+        <h2 class="section-title" id="keep-restore">Getting it back, or moving to a new device</h2>
+        <ol>
+          <li>Open Calm Sudoku on the new device (or browser).</li>
+          <li>Go to <strong>Settings → Restore from backup</strong> and pick your backup file.</li>
+          <li>Tap <strong>Replace</strong>. Your progress is back.</li>
+        </ol>
       </section>
     </div>
 
@@ -325,6 +422,15 @@
             <p class="pause-title">Solved!</p>
             <p class="pause-time">Your time: <span id="solved-time">00:00</span></p>
             <p class="challenge-result" id="challenge-result" hidden></p>
+            <div class="new-achievements" id="new-achievements" role="status" hidden>
+              <p class="new-achievements-title" id="new-achievements-title"></p>
+              <p class="new-achievements-names" id="new-achievements-text"></p>
+              <p class="new-achievements-links">
+                <button class="link-button" id="new-achievement-share" type="button">Share</button>
+                <span aria-hidden="true">·</span>
+                <button class="link-button" id="see-achievements" type="button">See them in Stats</button>
+              </p>
+            </div>
             <div class="card-buttons">
               <button class="primary-button" id="next-button" type="button">Next puzzle</button>
               <button class="share-button" id="share-button" type="button">
@@ -382,6 +488,16 @@
       <p class="support-note">Your support helps the developer make more ad&#8209;free games.</p>
     </footer>
   </div>
+
+  <!-- Restoring a backup: asked before this device's progress is replaced -->
+  <dialog class="nickname-dialog" id="restore-dialog" aria-labelledby="restore-title" aria-describedby="restore-note">
+    <h2 class="nickname-title" id="restore-title">Replace your progress?</h2>
+    <p class="nickname-note" id="restore-note"></p>
+    <div class="nickname-buttons">
+      <button class="text-button" id="restore-cancel" type="button">Cancel</button>
+      <button class="primary-button" id="restore-confirm" type="button">Replace</button>
+    </div>
+  </dialog>
 
   <!-- Nickname for challenges: asked the first time Share is tapped, and from Settings -->
   <dialog class="nickname-dialog" id="nickname-dialog" aria-labelledby="nickname-title" aria-describedby="nickname-note">
