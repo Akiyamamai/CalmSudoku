@@ -294,6 +294,16 @@
       <section class="settings-group" aria-labelledby="sharing-heading">
         <h2 class="settings-heading" id="sharing-heading">Sharing</h2>
         <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name" id="count-name">Add my solves to the weekly count</span>
+              <span class="setting-help" id="count-help">Each puzzle you finish adds 1 to “puzzles solved in the last 7 days”. Nothing about you is sent.</span>
+            </div>
+            <button class="switch" id="count-switch" type="button" role="switch" aria-checked="true"
+                    aria-labelledby="count-name" aria-describedby="count-help">
+              <span class="switch-knob" aria-hidden="true"></span>
+            </button>
+          </div>
           <button class="setting-row setting-link" id="settings-nickname" type="button">
             <span class="setting-text">
               <span class="setting-name">Nickname for challenges</span>
@@ -337,6 +347,7 @@
       <section class="stats-card keep-card" aria-labelledby="keep-why">
         <h2 class="section-title" id="keep-why">No account, no cloud</h2>
         <p>Calm Sudoku has no accounts. Your stats, streaks, achievements and saved games are kept <strong>only in this browser, on this device</strong>. Nobody else can see them, and nobody (not even the developer) can bring them back if they're lost.</p>
+        <p>The only thing the game sends anywhere is for the weekly count: when you finish a puzzle, it sends <strong>just "+1 solved" and the hour</strong>, with no name and no device ID. You can turn this off in <strong>Settings → Sharing</strong>.</p>
       </section>
 
       <section class="stats-card keep-card" aria-labelledby="keep-risks">
@@ -422,6 +433,7 @@
             <p class="pause-title">Solved!</p>
             <p class="pause-time">Your time: <span id="solved-time">00:00</span></p>
             <p class="challenge-result" id="challenge-result" hidden></p>
+            <p class="solved-count" id="solved-count" hidden></p>
             <div class="new-achievements" id="new-achievements" role="status" hidden>
               <p class="new-achievements-title" id="new-achievements-title"></p>
               <p class="new-achievements-names" id="new-achievements-text"></p>
@@ -474,6 +486,8 @@
             <button class="num" type="button" data-num="8"><span class="num-digit">8</span><span class="num-left"></span></button>
             <button class="num" type="button" data-num="9"><span class="num-digit">9</span><span class="num-left"></span></button>
           </div>
+          <!-- "N puzzles solved in the last 7 days": only when known, 10 or more, and there's room -->
+          <p class="count-line" id="count-line" hidden></p>
         </div>
       </main>
     </div>
