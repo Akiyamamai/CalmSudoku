@@ -9,6 +9,12 @@
     try {
       var saved = JSON.parse(localStorage.getItem('calm-sudoku/v1/settings') || '{}');
       document.documentElement.dataset.theme = saved.theme || 'light';
+      // The chosen color, if it's unlocked (same rules as js/colors.js), else Honey.
+      const stats = JSON.parse(localStorage.getItem('calm-sudoku/v1/stats')) || {};
+      const solved = Object.values(stats.levels || {}).reduce((n, l) => n + (l.completed || 0), 0);
+      const need = { sage: 50, ocean: 100 }[saved.color];
+      const ok = saved.color === 'honey' || (need ? solved >= need : saved.supporter && ['lavender', 'ink', 'sakura', 'autumn'].includes(saved.color));
+      document.documentElement.dataset.color = ok ? saved.color : 'honey';
     } catch (e) {
       document.documentElement.dataset.theme = 'light';
     }
@@ -40,6 +46,7 @@
     <div class="screen home-screen" id="home-screen">
       <header class="home-header">
         <h1 class="home-title">Calm Sudoku</h1>
+        <span class="supporter-pill" id="home-supporter" hidden><img src="icons/supporter.svg" alt="" width="22" height="22">Supporter</span>
       </header>
 
       <section class="home-section" aria-labelledby="daily-heading">
@@ -187,7 +194,7 @@
         <div class="settings-card">
           <div class="setting-row setting-row-stacked">
             <div class="setting-text">
-              <span class="setting-name" id="theme-name">Theme</span>
+              <span class="setting-name" id="theme-name">Mode</span>
               <span class="setting-help" id="theme-help">Auto follows your device's light or dark setting.</span>
             </div>
             <div class="segmented" id="theme-choice" role="radiogroup" aria-labelledby="theme-name" aria-describedby="theme-help">
@@ -205,6 +212,55 @@
               </button>
             </div>
           </div>
+          <div class="setting-row setting-row-stacked">
+            <div class="setting-text">
+              <span class="setting-name" id="color-name">Color</span>
+              <span class="setting-help" id="color-help">Honey is free. Sage and Ocean are earned by solving puzzles; the others come with the Supporter pack.</span>
+            </div>
+            <div class="color-choice" id="color-choice" role="radiogroup" aria-labelledby="color-name" aria-describedby="color-help">
+              <button type="button" role="radio" data-color-option="honey" aria-checked="true">
+                <span class="color-swatch" style="--sw-bg: #f7f3ec; --sw-accent: #dcb560; --sw-deep: #86621a" aria-hidden="true"></span>
+                Honey
+              </button>
+              <button type="button" role="radio" data-color-option="sage" aria-checked="false">
+                <span class="color-swatch" style="--sw-bg: #f1f4ee; --sw-accent: #8fb48a; --sw-deep: #46703f" aria-hidden="true"><span class="color-lock"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></span>
+                Sage
+              </button>
+              <button type="button" role="radio" data-color-option="ocean" aria-checked="false">
+                <span class="color-swatch" style="--sw-bg: #edf3f6; --sw-accent: #6fa6c4; --sw-deep: #2a6283" aria-hidden="true"><span class="color-lock"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></span>
+                Ocean
+              </button>
+              <button type="button" role="radio" data-color-option="lavender" aria-checked="false">
+                <span class="color-swatch" style="--sw-bg: #f4f1f7; --sw-accent: #b39ad6; --sw-deep: #674c91" aria-hidden="true"><span class="color-lock"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></span>
+                Lavender
+              </button>
+              <button type="button" role="radio" data-color-option="ink" aria-checked="false">
+                <span class="color-swatch" style="--sw-bg: #eef0f4; --sw-accent: #7b88b3; --sw-deep: #2f3b66" aria-hidden="true"><span class="color-lock"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></span>
+                Night Ink
+              </button>
+              <button type="button" role="radio" data-color-option="sakura" aria-checked="false">
+                <span class="color-swatch" style="--sw-bg: #f8f1f2; --sw-accent: #e7a3b5; --sw-deep: #9c4561" aria-hidden="true"><span class="color-lock"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></span>
+                Sakura
+              </button>
+              <button type="button" role="radio" data-color-option="autumn" aria-checked="false">
+                <span class="color-swatch" style="--sw-bg: #f7f0ea; --sw-accent: #d98b5f; --sw-deep: #9a3f1f" aria-hidden="true"><span class="color-lock"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></span>
+                Autumn
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="settings-group" aria-labelledby="supporter-heading">
+        <h2 class="settings-heading" id="supporter-heading">Supporter pack</h2>
+        <div class="settings-card">
+          <button class="setting-row setting-link" id="settings-supporter" type="button">
+            <span class="setting-text">
+              <span class="setting-name">Supporter pack</span>
+              <span class="setting-help" id="settings-supporter-help">Four more colors and a Supporter badge · $5</span>
+            </span>
+            <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
         </div>
       </section>
 
@@ -328,11 +384,57 @@
              aria-label="Support Calm Sudoku on Ko-fi (opens in a new tab)">
             <span class="setting-text">
               <span class="setting-name">Support Calm Sudoku</span>
-              <span class="setting-help">If you enjoy the game, you can buy me a coffee on Ko-fi.</span>
+              <span class="setting-help">If you enjoy the game, you can buy me a coffee on Ko-fi. Tips are a thank-you; colors come with the Supporter pack.</span>
             </span>
             <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg>
           </a>
         </div>
+      </section>
+    </div>
+
+    <div class="screen keep-screen supporter-screen" id="supporter-screen" hidden>
+      <header class="sub-header">
+        <button class="icon-button" id="supporter-back" type="button" aria-label="Back to Settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <h1 class="sub-title">Supporter pack</h1>
+      </header>
+
+      <section class="stats-card keep-card supporter-thanks" id="supporter-thanks" aria-labelledby="supporter-thanks-title" hidden>
+        <img class="supporter-badge-big" src="icons/supporter.svg" alt="Supporter badge" width="72" height="72">
+        <h2 class="section-title" id="supporter-thanks-title">Thank you for supporting Calm Sudoku <span class="heart" aria-hidden="true">♥</span></h2>
+        <p>Lavender, Night Ink, Sakura and Autumn are unlocked on this device.</p>
+        <button class="primary-button supporter-action" id="supporter-choose" type="button">Choose a color</button>
+        <p class="supporter-small">Playing on another phone or browser too? Enter the same code there, or restore a backup.</p>
+      </section>
+
+      <section class="stats-card keep-card" id="supporter-offer" aria-labelledby="supporter-what">
+        <h2 class="section-title" id="supporter-what">What you get</h2>
+        <div class="supporter-swatches">
+          <span class="supporter-swatch"><span class="color-swatch" style="--sw-bg: #f4f1f7; --sw-accent: #b39ad6; --sw-deep: #674c91" aria-hidden="true"></span>Lavender</span>
+          <span class="supporter-swatch"><span class="color-swatch" style="--sw-bg: #eef0f4; --sw-accent: #7b88b3; --sw-deep: #2f3b66" aria-hidden="true"></span>Night Ink</span>
+          <span class="supporter-swatch"><span class="color-swatch" style="--sw-bg: #f8f1f2; --sw-accent: #e7a3b5; --sw-deep: #9c4561" aria-hidden="true"></span>Sakura</span>
+          <span class="supporter-swatch"><span class="color-swatch" style="--sw-bg: #f7f0ea; --sw-accent: #d98b5f; --sw-deep: #9a3f1f" aria-hidden="true"></span>Autumn</span>
+        </div>
+        <ul>
+          <li><strong>Four extra colors</strong>, each with a light and a dark version.</li>
+          <li>A <strong>Supporter badge</strong> on Home, in Settings, in your challenge links and in Achievements.</li>
+          <li>Your support keeps Calm Sudoku <strong>ad-free</strong> and helps the developer make more calm games.</li>
+        </ul>
+        <a class="primary-button supporter-action" id="supporter-buy" href="https://ko-fi.com/s/da8f4eb407" target="_blank" rel="noopener"
+           aria-label="Get the Supporter pack on Ko-fi for $5 (opens in a new tab)">Get it on Ko-fi · $5</a>
+        <p class="supporter-small">A one-time purchase in the Ko-fi Shop. After paying, you get an unlock code to enter below. (A tip on the Ko-fi page doesn't include the code.)</p>
+      </section>
+
+      <section class="stats-card keep-card" id="supporter-code-card" aria-labelledby="supporter-have">
+        <h2 class="section-title" id="supporter-have">Have a code?</h2>
+        <form class="supporter-form" id="supporter-form">
+          <input class="nickname-input supporter-input" id="supporter-code" type="text" inputmode="text" autocomplete="off"
+                 autocapitalize="characters" spellcheck="false" maxlength="40" placeholder="CALM-XXXX-XXXX" aria-label="Unlock code">
+          <button class="primary-button" type="submit">Unlock</button>
+        </form>
+        <p class="supporter-status" id="supporter-status" role="status"></p>
+        <p class="supporter-small">Lost your themes? Enter your code again - check back your email received from the Ko-fi purchase.</p>
       </section>
     </div>
 
@@ -443,6 +545,10 @@
                 <button class="link-button" id="see-achievements" type="button">See them in Stats</button>
               </p>
             </div>
+            <p class="new-color" id="new-color" role="status" hidden>
+              <span id="new-color-text"></span>
+              <button class="link-button" id="new-color-try" type="button">Try it in Settings</button>
+            </p>
             <div class="card-buttons">
               <button class="primary-button" id="next-button" type="button">Next puzzle</button>
               <button class="share-button" id="share-button" type="button">
@@ -499,7 +605,12 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 3c-.6 1 .6 2 0 3M12.5 3c-.6 1 .6 2 0 3"/></svg>
         Support Calm Sudoku
       </a>
-      <p class="support-note">Your support helps the developer make more ad&#8209;free games.</p>
+      <p class="support-note" id="support-note">Tips are a thank-you. Colors come with the
+        <a class="support-note-link" id="support-note-link" href="https://ko-fi.com/s/da8f4eb407" target="_blank" rel="noopener"
+           aria-label="Supporter pack, $5 on Ko-fi (opens in a new tab)">Supporter pack</a> ($5).</p>
+      <!-- Supporters: a quiet thank-you instead of the box (still a Ko-fi link, for anyone who wants to tip again) -->
+      <a class="tip-thanks" id="tip-thanks" href="https://ko-fi.com/akiyamamai" target="_blank" rel="noopener" hidden
+         aria-label="Thank you for supporting Calm Sudoku. Ko-fi (opens in a new tab)"><span class="heart" aria-hidden="true">♥</span> Thank you for supporting Calm Sudoku</a>
     </footer>
   </div>
 
