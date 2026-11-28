@@ -9,9 +9,9 @@
     <path d="M202.7 104V192M309.3 104V192M202.7 320V408M309.3 320V408M104 192h304M104 320h304" stroke="#cbbfad" stroke-width="7" stroke-linecap="round"/>
     <rect x="112" y="200" width="288" height="112" rx="20" fill="#dcb560"/>
     <rect x="96" y="96" width="320" height="320" rx="34" fill="none" stroke="#978e81" stroke-width="12"/>
-    <text x="256" y="150" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="800" font-size="56" fill="#4a4f4b">Aki's</text>
+    <text x="256" y="161" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="800" font-size="56" fill="#4a4f4b">Aki's</text>
     <text x="256" y="256" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="800" font-size="78" letter-spacing="1" fill="#373d39">calm</text>
-    <text x="256" y="364" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="700" font-size="46" letter-spacing="3" fill="#4a4f4b">sudoku</text>
+    <text x="256" y="352" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="700" font-size="46" letter-spacing="3" fill="#4a4f4b">sudoku</text>
   </g>
   <text x="600" y="381" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="700" font-size="38" letter-spacing="1" fill="#6b6f6b">Aki's</text>
   <text x="600" y="446" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="800" font-size="76" fill="#373d39">Calm Sudoku</text>
