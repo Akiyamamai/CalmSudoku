@@ -635,6 +635,23 @@
     </div>
   </dialog>
 
+  <!-- "Add to Home Screen" on iPhone/iPad: Safari has no install popup, so we show the steps -->
+  <dialog class="nickname-dialog install-dialog" id="install-dialog" aria-labelledby="install-title">
+    <h2 class="nickname-title" id="install-title">Add to Home Screen</h2>
+    <ol class="install-steps">
+      <li>Tap the <strong>Share</strong> button
+        <svg class="install-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M7 10H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1"/></svg>.
+        <span class="install-hint">On newer iPhones it's inside the <strong>•••</strong> menu.</span></li>
+      <li>Tap <strong>Add to Home Screen</strong>
+        <svg class="install-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/></svg>.
+        <span class="install-hint">You may need to scroll down or tap <strong>More</strong> to find it.</span></li>
+      <li>Tap <strong>Add</strong>. Calm Sudoku now opens from its own icon, full screen, even offline.</li>
+    </ol>
+    <div class="nickname-buttons">
+      <button class="primary-button" id="install-close" type="button">Got it</button>
+    </div>
+  </dialog>
+
   <!-- Nickname for challenges: asked the first time Share is tapped, and from Settings -->
   <dialog class="nickname-dialog" id="nickname-dialog" aria-labelledby="nickname-title" aria-describedby="nickname-note">
     <form class="nickname-form" id="nickname-form">
