@@ -93,6 +93,12 @@
         </button>
       </nav>
 
+      <!-- "Add to Home Screen": only where the game can be installed, never inside the installed app -->
+      <button class="install-button" id="home-install" type="button" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M12 8v6M9 11h6"/></svg>
+        Add to Home Screen
+      </button>
+
       <!-- The gentle backup note: below the links, above the Support box -->
       <section class="home-section backup-reminder" id="backup-reminder" aria-labelledby="backup-reminder-title" hidden>
         <p class="backup-reminder-title" id="backup-reminder-title">💾 Your progress lives only on this device</p>
@@ -377,6 +383,13 @@
             <span class="setting-text">
               <span class="setting-name">How to play</span>
               <span class="setting-help">A short hands-on tour of the rules.</span>
+            </span>
+            <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <button class="setting-row setting-link" id="settings-install" type="button" hidden>
+            <span class="setting-text">
+              <span class="setting-name">Add to Home Screen</span>
+              <span class="setting-help">Open Calm Sudoku like an app, full screen, even offline.</span>
             </span>
             <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
           </button>
