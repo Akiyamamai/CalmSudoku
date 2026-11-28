@@ -6,12 +6,11 @@
   <!-- the app icon (same drawing as icon.svg), 310px wide -->
   <g transform="translate(445 26) scale(0.60546875)">
     <rect x="3" y="3" width="506" height="506" rx="112" fill="#fffdf8" stroke="#e4d9c6" stroke-width="6"/>
-    <path d="M202.7 320V408M309.3 320V408M104 192h304M104 320h304" stroke="#cbbfad" stroke-width="7" stroke-linecap="round"/>
+    <path d="M202.7 104V192M309.3 104V192M202.7 320V408M309.3 320V408M104 192h304M104 320h304" stroke="#cbbfad" stroke-width="7" stroke-linecap="round"/>
     <rect x="112" y="200" width="288" height="112" rx="20" fill="#dcb560"/>
     <rect x="96" y="96" width="320" height="320" rx="34" fill="none" stroke="#978e81" stroke-width="12"/>
-    <text x="256" y="236" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="800" font-size="78" letter-spacing="1" fill="#373d39">calm</text>
-    <text x="256" y="286" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="700" font-size="40" letter-spacing="3" fill="#4a4f4b">sudoku</text>
-    <text x="256" y="148" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="800" font-size="56" fill="#86621a">aki's</text>
+    <text x="256" y="240" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="800" font-size="62" fill="#373d39"><tspan font-size="34" fill="#6e5014" dy="-4">Aki's </tspan><tspan dy="4">calm</tspan></text>
+    <text x="256" y="288" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="700" font-size="36" letter-spacing="3" fill="#4a4f4b">sudoku</text>
   </g>
   <text x="600" y="381" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="700" font-size="38" letter-spacing="1" fill="#6b6f6b">Aki's</text>
   <text x="600" y="446" text-anchor="middle" dominant-baseline="central" font-family="Nunito" font-weight="800" font-size="76" fill="#373d39">Calm Sudoku</text>
