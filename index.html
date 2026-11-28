@@ -397,7 +397,7 @@
              aria-label="Support Calm Sudoku: get the Supporter pack on Ko-fi, $5 (opens in a new tab)">
             <span class="setting-text">
               <span class="setting-name">Support Calm Sudoku</span>
-              <span class="setting-help">If you enjoy the game, get the Supporter pack on Ko-fi: four extra colors and the Supporter badge, $5.</span>
+              <span class="setting-help" id="settings-support-help">If you enjoy the game, get the Supporter pack on Ko-fi: four extra colors and the Supporter badge, $5.</span>
             </span>
             <svg class="setting-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg>
           </a>
@@ -415,7 +415,7 @@
 
       <section class="stats-card keep-card supporter-thanks" id="supporter-thanks" aria-labelledby="supporter-thanks-title" hidden>
         <img class="supporter-badge-big" src="icons/supporter.svg" alt="Supporter badge" width="72" height="72">
-        <h2 class="section-title" id="supporter-thanks-title">Thank you for supporting Calm Sudoku <span class="heart" aria-hidden="true">♥</span></h2>
+        <h2 class="section-title" id="supporter-thanks-title">Thank you for supporting Aki's Calm Sudoku <span class="heart" aria-hidden="true">♥</span></h2>
         <p>Lavender, Night Ink, Sakura and Autumn are unlocked on this device.</p>
         <button class="primary-button supporter-action" id="supporter-choose" type="button">Choose a color</button>
         <p class="supporter-small">Playing on another phone or browser too? Enter the same code there, or restore a backup.</p>
@@ -612,16 +612,15 @@
     </div>
 
     <footer class="support-bar">
-      <!-- No ads: just the Ko-fi tip link, and a line on what support is for. -->
+      <!-- Supporters: a thank-you above the Support box (which then goes to the Ko-fi tip page, for anyone who wants to give more) -->
+      <p class="tip-thanks" id="tip-thanks" hidden><span class="heart" aria-hidden="true">♥</span> Thank you for supporting Aki's Calm Sudoku</p>
+      <!-- No ads: just the Ko-fi link, and a line on what support is for. -->
       <a class="tip-link" id="tip-link" href="https://ko-fi.com/s/da8f4eb407" target="_blank" rel="noopener"
          aria-label="Support Calm Sudoku: get the Supporter pack on Ko-fi, $5 (opens in a new tab)">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 3c-.6 1 .6 2 0 3M12.5 3c-.6 1 .6 2 0 3"/></svg>
         Support Calm Sudoku
       </a>
       <p class="support-note" id="support-note">Four extra colors and the Supporter badge. It keeps Calm Sudoku ad&#8209;free.</p>
-      <!-- Supporters: a quiet thank-you instead of the box (still a Ko-fi link, for anyone who wants to tip again) -->
-      <a class="tip-thanks" id="tip-thanks" href="https://ko-fi.com/akiyamamai" target="_blank" rel="noopener" hidden
-         aria-label="Thank you for supporting Calm Sudoku. Ko-fi (opens in a new tab)"><span class="heart" aria-hidden="true">♥</span> Thank you for supporting Calm Sudoku</a>
     </footer>
   </div>
 
